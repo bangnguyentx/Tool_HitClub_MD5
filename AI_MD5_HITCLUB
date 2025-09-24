@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <title>Tool AI MD5 68GB</title></title>
+  <style>
+    body {
+      font-family: "Segoe UI", Arial, sans-serif;
+      background: #f4faff;
+      color: #333;
+      margin: 0;
+      padding: 40px;
+      text-align: center;
+    }
+    h1 {
+      color: #0066cc;
+      margin-bottom: 20px;
+    }
+    input {
+      width: 360px;
+      padding: 12px;
+      font-size: 16px;
+      border: 2px solid #0066cc;
+      border-radius: 8px;
+      outline: none;
+    }
+    button {
+      padding: 12px 24px;
+      margin-left: 10px;
+      font-size: 16px;
+      background: #0066cc;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #004d99;
+    }
+    table {
+      width: 90%;
+      max-width: 800px;
+      margin: 30px auto;
+      border-collapse: collapse;
+      background: #fff;
+      box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+      border-radius: 10px;
+      overflow: hidden;
+    }
+    th, td {
+      padding: 12px 15px;
+      text-align: center;
+      border-bottom: 1px solid #eaeaea;
+    }
+    th {
+      background: #0066cc;
+      color: #fff;
+    }
+    tr:hover { background: #f0f8ff; }
+    .tai { color: green; font-weight: bold; }
+    .xiu { color: red; font-weight: bold; }
+    .summary {
+      margin-top: 25px;
+      font-size: 20px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <h1>Tool MD5 68GB</h1></h1>
+  <input type="text" id="md5input" placeholder="Nhập MD5 (32 ký tự hex)...">
+  <button onclick="analyze()">Phân tích</button>
+
+  <div id="result"></div>
+
+  <script>
+    function hexToBytes(hex) {
+      let bytes = [];
+      for (let i = 0; i < hex.length; i += 2) {
+        bytes.push(parseInt(hex.substr(i, 2), 16));
+      }
+      return bytes;
+    }
+
+    function analyze() {
+      let md5 = document.getElementById("md5input").value.trim().toLowerCase();
+      let output = document.getElementById("result");
+
+      if (!/^[0-9a-f]{32}$/.test(md5)) {
+        output.innerHTML = "<p style='color:red'>MD5 không hợp lệ!</p>";
+        return;
+      }
+
+      let bytes = hexToBytes(md5);
+      let methods = [];
+
+      // 1. Đếm ký tự lẻ/chẵn
+      let oddCount = (md5.match(/[13579bdf]/g) || []).length;
+      let evenCount = 32 - oddCount;
+      methods.push(["Odd/Even Hex Count", `Odd:${oddCount}, Even:${evenCount}`, oddCount > evenCount ? "Tài" : "Xỉu"]);
+
+      // Render bảng
+      let html = "<table><tr><th>BOT AI</th><th>PHÂN TÍCH</th><th>KẾT QUẢ</th></tr>";
+      let countTai = 0, countXiu = 0;
+      for (let [name,val,res] of methods) {
+        if (res === "Tài") countTai++; else countXiu++;
+        html += `<tr><td>${name}</td><td>${val}</td><td class="${res==='Tài'?'tai':'xiu'}">${res}</td></tr>`;
+      }
+      html += "</table>";
+
+      // Kết luận 
+      let final = countTai > countXiu ? "TÀI" : (countXiu > countTai ? "XỈU" : "HÒA");
+      html += `<div class="summary">👉 Kết luận chung: <span class="${final==='TÀI'?'tai':'xiu'}">${final}</span></div>`;
+
+      output.innerHTML = html;
+    }
+  </script>
+</body>
+</html>
